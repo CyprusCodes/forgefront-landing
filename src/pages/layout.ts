@@ -23,6 +23,7 @@ export function header(page: Page) {
         <a class="brand" href="${paths.home}"><img src="${paths.logo}" alt="ForgeFront home" width="148" height="31"></a>
         <nav class="site-nav" id="site-nav" aria-label="${common.navLabel}">
           <a href="${home}#workflow">${common.nav.workflow}</a>
+          <a href="${home}#agencies">${common.nav.agencies}</a>
           <a href="${home}#features">${common.nav.features}</a>
           <a href="${paths.contact}"${page === 'contact' ? ' aria-current="page"' : ''}>${common.nav.contact}</a>
           <a class="nav-login" href="${site.appUrl}">${common.login}</a>
@@ -54,6 +55,7 @@ export function footer() {
             <h2>${common.footer.product}</h2>
             <ul role="list">
               <li><a href="${paths.home}#workflow">${common.nav.workflow}</a></li>
+              <li><a href="${paths.home}#agencies">${common.nav.agencies}</a></li>
               <li><a href="${paths.home}#features">${common.nav.features}</a></li>
               <li><a href="${site.appUrl}">${common.login}</a></li>
             </ul>

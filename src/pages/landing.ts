@@ -1,63 +1,13 @@
 import { common, landing, site } from '../content/en'
 import { footer, header, paths } from './layout'
 
-// TODO: replace this mock with a real product screenshot (reservations list).
-function preview() {
-  const p = landing.preview
-  const d = p.detail
-  const pct = Math.round((d.paid / d.total) * 100)
-  const item = (name: string) => `<span class="app-item">${name}</span>`
-  const tabs = p.tabs.map((t, i) => `
-    <button type="button" role="tab" class="app-item" id="tab-${t.id}" aria-controls="panel-${t.id}"
-      aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${t.name}${t.badge ? `<b>${t.badge}</b>` : ''}</button>`).join('')
-  const panels = p.tabs.map((t, i) => `
-    <div class="app-panel" role="tabpanel" id="panel-${t.id}" aria-labelledby="tab-${t.id}"${i === 0 ? '' : ' hidden'}>
-      <div class="app-top"><strong>${t.name}</strong><span class="app-action">${t.action}</span></div>
-      <div class="app-chips">${p.chips.map((c, n) => `<span${n === 0 ? ' class="on"' : ''}>${c}</span>`).join('')}</div>
-      <div class="app-kpis">
-        ${p.kpis.map(k => `<div><span>${k.label}</span><strong class="num">${k.value}</strong><em class="tone-${k.tone}">${k.note}</em></div>`).join('')}
-      </div>
-      <table>
-        <thead><tr>${t.columns.map(c => `<th scope="col">${c}</th>`).join('')}</tr></thead>
-        <tbody>
-          ${t.rows.map(r => `
-            <tr${'selected' in r && r.selected ? ' class="is-selected"' : ''}>
-              <td>${r.cells[0]}</td>
-              <td>${r.cells[1]}</td>
-              <td class="num">${r.cells[2]}</td>
-              <td class="app-agent">${r.cells[3]}</td>
-              <td><span class="status status-${r.tone}">${r.status}</span></td>
-            </tr>`).join('')}
-        </tbody>
-      </table>
-    </div>`).join('')
-  return `
-    <figure class="app" aria-label="${p.label}">
-      <div class="app-side">
-        <div class="app-ws"><i><img src="${paths.mark}" alt=""></i><span>${p.workspace}<small>${p.workspaceSub}</small></span></div>
-        ${p.navBefore.map(item).join('')}
-        <div role="tablist" aria-orientation="vertical" aria-label="${p.workspace}">${tabs}</div>
-        <span class="app-group">${p.financeLabel}</span>
-        ${p.navAfter.map(item).join('')}
-      </div>
-      <div class="app-main">${panels}</div>
-      <aside class="app-detail" aria-label="${d.unit}">
-        <strong class="app-unit">${d.unit}</strong>
-        <span class="app-facts">${d.facts}</span>
-        <span class="status status-ok">${d.status}</span>
-        <dl>${d.rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
-        <div class="app-plan">
-          <div><span>${d.planLabel}</span><strong>${d.paid} of ${d.total}</strong></div>
-          <div class="plan-track" aria-hidden="true"><span style="width:${pct}%"></span></div>
-        </div>
-        <ol class="app-inst">${d.instalments.map(x => `<li class="is-${x.state}"><span>${x.name}</span><span>${x.date}</span></li>`).join('')}</ol>
-        <p class="app-reminder">${d.reminder}</p>
-      </aside>
-    </figure>
-  `
-}
+type Shot = { src: string; width: number; height: number; alt: string }
 
-// TODO: replace with a real "Ask your data" screenshot when available.
+const img = (shot: Shot, eager = false) =>
+  `<img src="${shot.src}" width="${shot.width}" height="${shot.height}" alt="${shot.alt}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`
+
+const status = (tone: string, text: string) => `<span class="status status-${tone}">${text}</span>`
+
 function ask() {
   const a = landing.features.ask
   return `
@@ -77,9 +27,79 @@ function ask() {
   `
 }
 
-// TODO: add product screenshots to the workflow steps and the reporting feature.
+function stepPanel(step: (typeof landing.workflow.steps)[number]) {
+  if ('image' in step && step.image) return img(step.image)
+  if ('plan' in step && step.plan) {
+    // TODO: replace with a real payment plan screenshot when one is available.
+    const pl = step.plan
+    return `
+      <div class="shot-head"><strong>${pl.title}</strong><span>${pl.summary}</span></div>
+      <table>
+        <thead><tr><th scope="col">Instalment</th><th scope="col">Due</th><th scope="col">Amount</th><th scope="col">Status</th></tr></thead>
+        <tbody>${pl.rows.map(([n, d, amt, st, tone]) => `<tr><td class="strong">${n}</td><td>${d}</td><td class="num">${amt}</td><td>${status(tone, st)}</td></tr>`).join('')}</tbody>
+      </table>`
+  }
+  return ''
+}
+
+function workflowSection() {
+  const w = landing.workflow
+  return `
+    <section class="workflow" id="workflow" aria-labelledby="workflow-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="workflow-title">${w.title}</h2>
+          <p>${w.intro}</p>
+        </div>
+        <div class="steps" role="tablist" aria-label="${w.title}">
+          ${w.steps.map((st, i) => `
+            <button type="button" role="tab" class="step" id="tab-wf-${st.id}" aria-controls="panel-wf-${st.id}"
+              aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">
+              <span class="step-num">${String(i + 1).padStart(2, '0')}</span>
+              <span class="step-title">${st.title}</span>
+              <span class="step-detail">${st.detail}</span>
+            </button>`).join('')}
+        </div>
+        <figure class="shot shot-dark" aria-label="${w.shotLabel}">
+          ${w.steps.map((st, i) => `<div class="shot-panel${'image' in st ? ' shot-panel-img' : ''}" role="tabpanel" id="panel-wf-${st.id}" aria-labelledby="tab-wf-${st.id}"${i === 0 ? '' : ' hidden'}>${stepPanel(st)}</div>`).join('')}
+        </figure>
+      </div>
+    </section>`
+}
+
+function showcase(id: string, data: { title: string; description: string; points: string[]; image: Shot }, tone: string) {
+  return `
+    <section class="showcase showcase-${tone}" id="${id}" aria-labelledby="${id}-title">
+      <div class="wrap">
+        <div class="showcase-text">
+          <div>
+            <h2 id="${id}-title">${data.title}</h2>
+            <p class="section-text">${data.description}</p>
+          </div>
+          <ul class="checks" role="list">${data.points.map(pt => `<li>${pt}</li>`).join('')}</ul>
+        </div>
+        <figure class="shot shot-img">${img(data.image)}</figure>
+      </div>
+    </section>`
+}
+
+function afterSalesSection() {
+  const a = landing.afterSales
+  return `
+    <section class="after-sales" aria-labelledby="after-title">
+      <div class="wrap">
+        <div class="section-head section-head-light">
+          <h2 id="after-title">${a.title}</h2>
+          <p>${a.intro}</p>
+        </div>
+        <ul class="cards" role="list">${a.items.map(it => `<li><h3>${it.title}</h3><p>${it.detail}</p></li>`).join('')}</ul>
+        <figure class="shot shot-img after-shot">${img(a.image)}</figure>
+      </div>
+    </section>`
+}
+
 export function renderLanding() {
-  const { hero, problem, workflow, features, proof, cta } = landing
+  const { hero, heroShot, problem, collections, agencies, features, proof, cta } = landing
   return `
     ${header('home')}
     <main id="main" tabindex="-1">
@@ -94,7 +114,7 @@ export function renderLanding() {
               <a class="button button-ghost" href="#workflow">${hero.secondary}</a>
             </div>
           </div>
-          ${preview()}
+          <figure class="shot shot-img hero-shot">${img(heroShot, true)}</figure>
         </div>
       </section>
 
@@ -110,17 +130,10 @@ export function renderLanding() {
         </div>
       </section>
 
-      <section class="workflow" id="workflow" aria-labelledby="workflow-title">
-        <div class="wrap">
-          <div class="section-head">
-            <h2 id="workflow-title">${workflow.title}</h2>
-            <p>${workflow.intro}</p>
-          </div>
-          <ol class="steps">
-            ${workflow.steps.map(s => `<li><h3>${s.title}</h3><p>${s.detail}</p></li>`).join('')}
-          </ol>
-        </div>
-      </section>
+      ${workflowSection()}
+      ${showcase('collections', collections, 'light')}
+      ${showcase('agencies', agencies, 'white')}
+      ${afterSalesSection()}
 
       <section class="features" id="features" aria-labelledby="features-title">
         <div class="wrap split split-top">
@@ -129,7 +142,7 @@ export function renderLanding() {
             ${ask()}
           </div>
           <ul class="feature-list" role="list">
-            ${features.items.map((i, n) => `<li${n === features.items.length - 1 ? ' class="feature-linked"' : ''}><h3>${i.title}</h3><p>${i.detail}</p></li>`).join('')}
+            ${features.items.map((i, n) => `<li${n === 0 ? ' class="feature-linked"' : ''}><h3>${i.title}</h3><p>${i.detail}</p></li>`).join('')}
           </ul>
         </div>
       </section>
