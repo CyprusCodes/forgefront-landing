@@ -48,6 +48,21 @@ export function initTabs() {
         }
       })
     }
+    // Links like /product/#wf-payments open that step.
+    const fromHash = () => {
+      const match = location.hash.match(/^#wf-([\w-]+)$/)
+      const tab = match && tabs.find(t => t.id === `tab-wf-${match[1]}`)
+      if (!tab) return
+      select(tab)
+      history.scrollRestoration = 'manual'
+      requestAnimationFrame(() => {
+        const top = list.getBoundingClientRect().top + scrollY - 160
+        scrollTo({ top, behavior: 'instant' })
+      })
+    }
+    if (document.readyState === 'complete') fromHash()
+    else window.addEventListener('load', fromHash, { once: true })
+    window.addEventListener('hashchange', fromHash)
   }
 }
 

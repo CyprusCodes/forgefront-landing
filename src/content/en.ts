@@ -29,7 +29,6 @@ export const landing = {
   hero: {
     label: 'ForgeFront',
     title: 'Sales ERP & CRM for property developers.',
-
     description:
       'ForgeFront keeps leads, price lists, reservations, agencies, contracts and payment plans in one system. Sales, finance and management work from the same numbers.',
     secondary: 'See how it works',
@@ -79,19 +78,19 @@ export const landing = {
         id: 'deposits',
         title: 'Reservations & deposits',
         detail: 'Hold a unit within your reservation rules, take the deposit and see the listing and agreed price side by side.',
-        image: { src: '/screens/deposits-demo.png', width: 1761, height: 893, alt: 'Deposit requests in ForgeFront with project, agency and listing price' },
+        image: { src: '/screens/deposits-demo.webp', width: 1761, height: 893, alt: 'Deposit requests in ForgeFront with project, agency and listing price' },
       },
       {
         id: 'approvals',
         title: 'Approvals & contracts',
         detail: 'Reservation, extension, transfer and deposit requests wait in one queue. Contracts then move to signature and final approval.',
-        image: { src: '/screens/approvals-demo.png', width: 1761, height: 893, alt: 'Waiting actions in ForgeFront with reservation, extension, agency and transfer requests' },
+        image: { src: '/screens/approvals-demo.webp', width: 1761, height: 893, alt: 'Waiting actions in ForgeFront with reservation, extension, agency and transfer requests' },
       },
       {
         id: 'payments',
         title: 'Payment plans',
-        detail: 'Each buyer gets a payment plan. Reminders go out before every due date and late payments move to collections.',
-        image: { src: '/screens/plan-demo.png', width: 1763, height: 892, alt: 'Payment plan in ForgeFront with 24 monthly instalments, principal, interest, late fees and status' },
+        detail: 'Each buyer gets a payment plan with interest and late fees worked out per instalment. Record payments, correct the principal or regenerate the plan when terms change.',
+        image: { src: '/screens/plan-demo.webp', width: 1763, height: 892, alt: 'Payment plan in ForgeFront with 24 monthly instalments, principal, interest, late fees and status' },
       },
     ],
   },
@@ -112,10 +111,10 @@ export const landing = {
       'Agencies in other countries log in to ForgeFront with their own accounts. They see live prices and availability, reserve units and follow their sales. Your accounting stays private.',
     points: [
       'Agency levels, franchises and registration requests',
-      'Commission flow from submitted to approved to paid',
-      'Each role sees only what it needs: sales, agencies, call centre, finance',
+      'Commission rates per agency level, tracked from submitted to paid',
+      'Each role sees only its own work: sales reps their own sales, agencies their own reservations',
     ],
-    image: { src: '/screens/agencies-demo.png', width: 1918, height: 820, alt: 'Agency list in ForgeFront with agency levels, registration requests and franchises' },
+    image: { src: '/screens/agencies-demo.webp', width: 1918, height: 820, alt: 'Agency list in ForgeFront with agency levels, registration requests and franchises' },
   },
   afterSales: {
     title: 'The work does not stop at the sale.',
@@ -143,7 +142,7 @@ export const landing = {
     },
     items: [
       { title: 'Ask your data', detail: 'Type a question like “overdue payments in Block B” and get the list. Currently in beta.' },
-      { title: 'Live dashboards', detail: 'Available, reserved, deposit and sold units per project, plus a leaderboard for your sales team.' },
+      { title: 'Dashboards & reports', detail: 'Live availability per project, monthly sales charts, a leaderboard and reports you create when you need them.' },
       { title: 'Several currencies', detail: 'Prices and payments in GBP, EUR, USD and TRY with daily exchange rates.' },
       { title: 'Sales rules & campaigns', detail: 'Set reservation limits per representative, reservation durations and sales campaigns per project.' },
       { title: 'Calendar & tasks', detail: 'Site visits, follow-ups and to-dos for sales and call centre staff in one calendar.' },

@@ -99,25 +99,38 @@ function afterSalesSection() {
     </section>`
 }
 
-function closingSection() { const { proof, cta } = landing; return `      <section class="closing" aria-labelledby="cta-title">
-        <div class="wrap">
-          <div class="closing-card">
-            <p class="proof"><strong>${proof.value}</strong> <span>${proof.label}</span></p>
-            <div class="closing-copy">
-              <h2 id="cta-title">${cta.title}</h2>
-              <p class="section-text">${cta.description}</p>
-              <div class="actions">
-                <a class="button" href="${paths.contact}">${common.demo}</a>
-                <span class="muted">${cta.or} <a href="mailto:${site.email}">${site.email}</a></span>
-              </div>
+function closingSection() {
+  const { proof, cta } = landing
+  return `
+    <section class="closing" aria-labelledby="cta-title">
+      <div class="wrap">
+        <div class="closing-card">
+          <p class="proof"><strong>${proof.value}</strong> <span>${proof.label}</span></p>
+          <div class="closing-copy">
+            <h2 id="cta-title">${cta.title}</h2>
+            <p class="section-text">${cta.description}</p>
+            <div class="actions">
+              <a class="button" href="${paths.contact}">${common.demo}</a>
+              <span class="muted">${cta.or} <a href="mailto:${site.email}">${site.email}</a></span>
             </div>
           </div>
         </div>
-      </section>
-` }
+      </div>
+    </section>`
+}
+
+function pageIntro(title: string, lead: string) {
+  return `
+    <section class="detail-intro">
+      <div class="wrap">
+        <h1>${title}</h1>
+        <p class="lead">${lead}</p>
+      </div>
+    </section>`
+}
 
 export function renderLanding() {
-  const { hero, heroShots, problem } = landing
+  const { hero, heroShots, problem, workflow, agencies } = landing
   return `
     ${header('home')}
     <main id="main" tabindex="-1">
@@ -150,13 +163,42 @@ export function renderLanding() {
         </div>
       </section>
 
-<section class="home-product" id="workflow"><div class="wrap"><h2>${landing.workflow.title}</h2><p class="section-text">${landing.workflow.intro}</p><ul class="sales-summary">${landing.workflow.steps.map(st => `<li>${st.title}</li>`).join('')}</ul><a class="text-link arrow-link" href="${paths.product}">${common.nav.workflow}</a></div></section><section class="home-agencies"><div class="wrap split"><h2>${landing.agencies.title}</h2><div><p>${landing.agencies.description}</p><div class="actions"><a class="text-link arrow-link" href="${paths.agencies}">${common.nav.agencies}</a></div></div></div></section>      ${closingSection()}
+      <section class="home-product" id="workflow">
+        <div class="wrap">
+          <h2>${workflow.title}</h2>
+          <p class="section-text">${workflow.intro}</p>
+          <ul class="sales-summary">
+            ${workflow.steps.map((st, i) => `<li><a href="${paths.product}#wf-${st.id}"><span class="step-num">${String(i + 1).padStart(2, '0')}</span>${st.title}</a></li>`).join('')}
+          </ul>
+          <a class="text-link arrow-link" href="${paths.product}">${common.nav.workflow}</a>
+        </div>
+      </section>
+
+      <section class="home-agencies">
+        <div class="wrap split">
+          <h2>${agencies.title}</h2>
+          <div>
+            <p>${agencies.description}</p>
+            <div class="actions">
+              <a class="text-link arrow-link" href="${paths.agencies}">${common.nav.agencies}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      ${closingSection()}
     </main>
     ${footer()}
   `
 }
 
-export function renderProduct() { const { features } = landing; return `${header('product')}<main id="main" tabindex="-1"><section class="detail-intro"><div class="wrap"><h1>${common.nav.workflow}</h1><p class="lead">${landing.workflow.intro}</p></div></section>      ${workflowSection()}
+export function renderProduct() {
+  const { features, workflow } = landing
+  return `
+    ${header('product')}
+    <main id="main" tabindex="-1">
+      ${pageIntro(common.nav.workflow, workflow.intro)}
+      ${workflowSection()}
       ${collectionsSection()}
       ${afterSalesSection()}
 
@@ -172,6 +214,20 @@ export function renderProduct() { const { features } = landing; return `${header
         </div>
       </section>
 
-${closingSection()}</main>${footer()}` }
+      ${closingSection()}
+    </main>
+    ${footer()}
+  `
+}
 
-export function renderAgencies() { return `${header('agencies')}<main id="main" tabindex="-1"><section class="detail-intro"><div class="wrap"><h1>${common.nav.agencies}</h1><p class="lead">${landing.agencies.title}</p></div></section>${showcase('agencies', landing.agencies, 'white')}${closingSection()}</main>${footer()}` }
+export function renderAgencies() {
+  return `
+    ${header('agencies')}
+    <main id="main" tabindex="-1">
+      ${pageIntro(common.nav.agencies, landing.agencies.title)}
+      ${showcase('agencies', landing.agencies, 'white')}
+      ${closingSection()}
+    </main>
+    ${footer()}
+  `
+}
