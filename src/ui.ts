@@ -1,3 +1,5 @@
+import { common } from './content/en'
+
 // Small progressive enhancements shared by every page.
 
 export function initMenu() {
@@ -46,5 +48,42 @@ export function initTabs() {
         }
       })
     }
+  }
+}
+
+export function initScreenViewer() {
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-screen]')
+  if (!links.length) return
+
+  const dialog = document.createElement('dialog')
+  dialog.className = 'screen-dialog'
+  dialog.setAttribute('aria-label', common.enlargeScreen)
+
+  const close = document.createElement('button')
+  close.className = 'screen-close'
+  close.type = 'button'
+  close.textContent = common.closeScreen
+
+  const image = document.createElement('img')
+  dialog.append(close, image)
+  document.body.append(dialog)
+
+  close.addEventListener('click', () => dialog.close())
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog) dialog.close()
+  })
+  dialog.addEventListener('close', () => {
+    document.documentElement.classList.remove('screen-open')
+  })
+
+  for (const link of links) {
+    link.addEventListener('click', event => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return
+      event.preventDefault()
+      image.src = link.href
+      image.alt = link.querySelector('img')?.alt ?? ''
+      dialog.showModal()
+      document.documentElement.classList.add('screen-open')
+    })
   }
 }

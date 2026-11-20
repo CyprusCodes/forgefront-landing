@@ -4,9 +4,27 @@ import { footer, header, paths } from './layout'
 type Shot = { src: string; width: number; height: number; alt: string }
 
 const img = (shot: Shot, eager = false) =>
-  `<img src="${shot.src}" width="${shot.width}" height="${shot.height}" alt="${shot.alt}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`
+  `<a class="screen-link" href="${shot.src}" data-screen>
+    <img src="${shot.src}" width="${shot.width}" height="${shot.height}" alt="${shot.alt}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">
+    <span class="screen-expand">${common.enlargeScreen}<span aria-hidden="true"> ↗</span></span>
+  </a>`
 
-const status = (tone: string, text: string) => `<span class="status status-${tone}">${text}</span>`
+function collectionsSection() {
+  const c = landing.collections
+  return `
+    <section class="collections-section" id="collections" aria-labelledby="collections-title">
+      <div class="wrap">
+        <div class="collections-intro">
+          <h2 id="collections-title">${c.title}</h2>
+          <p class="section-text">${c.description}</p>
+        </div>
+        <figure class="shot collections-shot">${img(c.image)}</figure>
+        <ul class="collection-notes" role="list">
+          ${c.points.map(point => `<li>${point}</li>`).join('')}
+        </ul>
+      </div>
+    </section>`
+}
 
 function ask() {
   const a = landing.features.ask
@@ -27,21 +45,6 @@ function ask() {
   `
 }
 
-function stepPanel(step: (typeof landing.workflow.steps)[number]) {
-  if ('image' in step && step.image) return img(step.image)
-  if ('plan' in step && step.plan) {
-    // TODO: replace with a real payment plan screenshot when one is available.
-    const pl = step.plan
-    return `
-      <div class="shot-head"><strong>${pl.title}</strong><span>${pl.summary}</span></div>
-      <table>
-        <thead><tr><th scope="col">Instalment</th><th scope="col">Due</th><th scope="col">Amount</th><th scope="col">Status</th></tr></thead>
-        <tbody>${pl.rows.map(([n, d, amt, st, tone]) => `<tr><td class="strong">${n}</td><td>${d}</td><td class="num">${amt}</td><td>${status(tone, st)}</td></tr>`).join('')}</tbody>
-      </table>`
-  }
-  return ''
-}
-
 function workflowSection() {
   const w = landing.workflow
   return `
@@ -55,14 +58,12 @@ function workflowSection() {
           ${w.steps.map((st, i) => `
             <button type="button" role="tab" class="step" id="tab-wf-${st.id}" aria-controls="panel-wf-${st.id}"
               aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">
-              <span class="step-num">${String(i + 1).padStart(2, '0')}</span>
               <span class="step-title">${st.title}</span>
-              <span class="step-detail">${st.detail}</span>
             </button>`).join('')}
         </div>
-        <figure class="shot shot-dark" aria-label="${w.shotLabel}">
-          ${w.steps.map((st, i) => `<div class="shot-panel${'image' in st ? ' shot-panel-img' : ''}" role="tabpanel" id="panel-wf-${st.id}" aria-labelledby="tab-wf-${st.id}"${i === 0 ? '' : ' hidden'}>${stepPanel(st)}</div>`).join('')}
-        </figure>
+        <div class="workflow-panels">
+          ${w.steps.map((st, i) => `<div class="shot-panel shot-panel-img" role="tabpanel" id="panel-wf-${st.id}" aria-labelledby="tab-wf-${st.id}"${i === 0 ? '' : ' hidden'}><p class="workflow-detail">${st.detail}</p><figure class="shot workflow-shot">${img(st.image)}</figure></div>`).join('')}
+        </div>
       </div>
     </section>`
 }
@@ -98,8 +99,25 @@ function afterSalesSection() {
     </section>`
 }
 
+function closingSection() { const { proof, cta } = landing; return `      <section class="closing" aria-labelledby="cta-title">
+        <div class="wrap">
+          <div class="closing-card">
+            <p class="proof"><strong>${proof.value}</strong> <span>${proof.label}</span></p>
+            <div class="closing-copy">
+              <h2 id="cta-title">${cta.title}</h2>
+              <p class="section-text">${cta.description}</p>
+              <div class="actions">
+                <a class="button" href="${paths.contact}">${common.demo}</a>
+                <span class="muted">${cta.or} <a href="mailto:${site.email}">${site.email}</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+` }
+
 export function renderLanding() {
-  const { hero, heroShot, problem, collections, agencies, features, proof, cta } = landing
+  const { hero, heroShots, problem } = landing
   return `
     ${header('home')}
     <main id="main" tabindex="-1">
@@ -107,14 +125,16 @@ export function renderLanding() {
         <div class="wrap hero-layout">
           <div class="hero-copy">
             <p class="eyebrow">${hero.label}</p>
-            <h1 id="hero-title">${hero.titleStart} <span class="accent">${hero.titleAccent}</span>.</h1>
+            <h1 id="hero-title">${hero.title}</h1>
             <p class="lead">${hero.description}</p>
             <div class="actions">
               <a class="button" href="${paths.contact}">${common.demo}</a>
               <a class="button button-ghost" href="#workflow">${hero.secondary}</a>
             </div>
           </div>
-          <figure class="shot shot-img hero-shot">${img(heroShot, true)}</figure>
+          <div class="hero-stage">
+            <figure class="shot shot-img hero-shot">${img(heroShots[0], true)}</figure>
+          </div>
         </div>
       </section>
 
@@ -130,9 +150,14 @@ export function renderLanding() {
         </div>
       </section>
 
-      ${workflowSection()}
-      ${showcase('collections', collections, 'light')}
-      ${showcase('agencies', agencies, 'white')}
+<section class="home-product" id="workflow"><div class="wrap"><h2>${landing.workflow.title}</h2><p class="section-text">${landing.workflow.intro}</p><ul class="sales-summary">${landing.workflow.steps.map(st => `<li>${st.title}</li>`).join('')}</ul><a class="text-link arrow-link" href="${paths.product}">${common.nav.workflow}</a></div></section><section class="home-agencies"><div class="wrap split"><h2>${landing.agencies.title}</h2><div><p>${landing.agencies.description}</p><div class="actions"><a class="text-link arrow-link" href="${paths.agencies}">${common.nav.agencies}</a></div></div></div></section>      ${closingSection()}
+    </main>
+    ${footer()}
+  `
+}
+
+export function renderProduct() { const { features } = landing; return `${header('product')}<main id="main" tabindex="-1"><section class="detail-intro"><div class="wrap"><h1>${common.nav.workflow}</h1><p class="lead">${landing.workflow.intro}</p></div></section>      ${workflowSection()}
+      ${collectionsSection()}
       ${afterSalesSection()}
 
       <section class="features" id="features" aria-labelledby="features-title">
@@ -147,22 +172,6 @@ export function renderLanding() {
         </div>
       </section>
 
-      <section class="closing" aria-labelledby="cta-title">
-        <div class="wrap">
-          <div class="closing-card">
-            <p class="proof"><strong>${proof.value}</strong> <span>${proof.label}</span></p>
-            <div class="closing-copy">
-              <h2 id="cta-title">${cta.title}</h2>
-              <p class="section-text">${cta.description}</p>
-              <div class="actions">
-                <a class="button" href="${paths.contact}">${common.demo}</a>
-                <span class="muted">${cta.or} <a href="mailto:${site.email}">${site.email}</a></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-    ${footer()}
-  `
-}
+${closingSection()}</main>${footer()}` }
+
+export function renderAgencies() { return `${header('agencies')}<main id="main" tabindex="-1"><section class="detail-intro"><div class="wrap"><h1>${common.nav.agencies}</h1><p class="lead">${landing.agencies.title}</p></div></section>${showcase('agencies', landing.agencies, 'white')}${closingSection()}</main>${footer()}` }

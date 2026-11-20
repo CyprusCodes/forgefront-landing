@@ -9,10 +9,12 @@ export const site = {
 export const common = {
   skipLink: 'Skip to content',
   navLabel: 'Main navigation',
-  nav: { workflow: 'How it works', agencies: 'Agencies', features: 'Features', contact: 'Contact' },
+  nav: { workflow: 'Product', agencies: 'Agencies', features: 'Features', contact: 'Contact' },
   menu: 'Menu',
   login: 'Log in',
   demo: 'Request a demo',
+  enlargeScreen: 'View larger',
+  closeScreen: 'Close image',
   footer: {
     tagline: 'Sales ERP & CRM for property developers.',
     product: 'Product',
@@ -25,19 +27,27 @@ export const common = {
 
 export const landing = {
   hero: {
-    label: 'Sales ERP & CRM for property developers',
-    titleStart: 'From first enquiry to final',
-    titleAccent: 'instalment',
+    label: 'ForgeFront',
+    title: 'Sales ERP & CRM for property developers.',
+
     description:
       'ForgeFront keeps leads, price lists, reservations, agencies, contracts and payment plans in one system. Sales, finance and management work from the same numbers.',
     secondary: 'See how it works',
   },
-  heroShot: {
-    src: '/screens/dashboard.webp',
-    width: 1545,
-    height: 556,
-    alt: 'ForgeFront dashboard with available, reserved, deposit and sold units, tasks and the sales leaderboard',
-  },
+  heroShots: [
+    {
+      src: '/screens/dashboard-overview.webp',
+      width: 1545,
+      height: 778,
+      alt: 'ForgeFront dashboard with available, reserved, deposit and sold units, tasks and the sales leaderboard',
+    },
+    {
+      src: '/screens/dashboard-graphs.webp',
+      width: 1525,
+      height: 890,
+      alt: 'ForgeFront dashboard charts for all projects and for one project by unit type',
+    },
+  ],
   problem: {
     title: 'Most sales teams still run on spreadsheets.',
     description:
@@ -69,34 +79,24 @@ export const landing = {
         id: 'deposits',
         title: 'Reservations & deposits',
         detail: 'Hold a unit within your reservation rules, take the deposit and see the listing and agreed price side by side.',
-        image: { src: '/screens/deposits.webp', width: 1225, height: 621, alt: 'Deposit requests in ForgeFront with project, agency and listing price' },
+        image: { src: '/screens/deposits-demo.png', width: 1761, height: 893, alt: 'Deposit requests in ForgeFront with project, agency and listing price' },
       },
       {
         id: 'approvals',
         title: 'Approvals & contracts',
         detail: 'Reservation, extension, transfer and deposit requests wait in one queue. Contracts then move to signature and final approval.',
-        image: { src: '/screens/approvals.webp', width: 1540, height: 781, alt: 'Waiting actions in ForgeFront with reservation, extension, agency and transfer requests' },
+        image: { src: '/screens/approvals-demo.png', width: 1761, height: 893, alt: 'Waiting actions in ForgeFront with reservation, extension, agency and transfer requests' },
       },
       {
         id: 'payments',
         title: 'Payment plans',
         detail: 'Each buyer gets a payment plan. Reminders go out before every due date and late payments move to collections.',
-        plan: {
-          title: 'Payment plan · A-304',
-          summary: '4 of 12 instalments paid',
-          rows: [
-            ['Instalment 3', '1 Oct', '£8,200', 'Paid', 'ok'],
-            ['Instalment 4', '1 Nov', '£8,200', 'Paid', 'ok'],
-            ['Instalment 5', '1 Dec', '£8,200', 'Reminder sent', 'info'],
-            ['Instalment 6', '1 Jan', '£8,200', 'Scheduled', 'neutral'],
-            ['Instalment 7', '1 Feb', '£8,200', 'Scheduled', 'neutral'],
-          ],
-        },
+        image: { src: '/screens/plan-demo.png', width: 1763, height: 892, alt: 'Payment plan in ForgeFront with 24 monthly instalments, principal, interest, late fees and status' },
       },
     ],
   },
   collections: {
-    title: 'Late payments follow up on their own.',
+    title: 'Follow up on overdue instalments.',
     description:
       'Set the steps once. When an instalment is late, ForgeFront sends the right message on the right channel and moves the account to your worklist when someone needs to act.',
     image: { src: '/screens/collections.webp', width: 1510, height: 655, alt: 'Collections escalation ladder in ForgeFront: email at 30 days, email and SMS at 60 days, legal letters at 90 and 120 days' },
@@ -115,7 +115,7 @@ export const landing = {
       'Commission flow from submitted to approved to paid',
       'Each role sees only what it needs: sales, agencies, call centre, finance',
     ],
-    image: { src: '/screens/agencies.webp', width: 1510, height: 645, alt: 'Agency list in ForgeFront with agency levels, registration requests and franchises' },
+    image: { src: '/screens/agencies-demo.png', width: 1918, height: 820, alt: 'Agency list in ForgeFront with agency levels, registration requests and franchises' },
   },
   afterSales: {
     title: 'The work does not stop at the sale.',
@@ -155,8 +155,8 @@ export const landing = {
   },
   proof: { value: '1,000+', label: 'sales completed end to end in ForgeFront' },
   cta: {
-    title: 'See it with your own projects.',
-    description: 'Tell us a little about your company and we will set up a walkthrough around your units and payment plans.',
+    title: 'Take a closer look at ForgeFront.',
+    description: 'Tell us about your company. We’ll arrange a demo.',
     or: 'Or email us at',
   },
 }

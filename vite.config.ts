@@ -1,11 +1,13 @@
 import { resolve } from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 import { renderContact } from './src/pages/contact'
-import { renderLanding } from './src/pages/landing'
+import { renderLanding, renderProduct, renderAgencies } from './src/pages/landing'
 import { renderNotFound, renderPrivacy } from './src/pages/simple'
 
 const pages: Record<string, () => string> = {
   'index.html': renderLanding,
+  'product/index.html': renderProduct,
+  'agencies/index.html': renderAgencies,
   'contact/index.html': renderContact,
   'privacy/index.html': renderPrivacy,
   '404.html': renderNotFound,
@@ -31,6 +33,8 @@ export default defineConfig({
     rolldownOptions: {
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
+        product: resolve(import.meta.dirname, 'product/index.html'),
+        agencies: resolve(import.meta.dirname, 'agencies/index.html'),
         contact: resolve(import.meta.dirname, 'contact/index.html'),
         privacy: resolve(import.meta.dirname, 'privacy/index.html'),
         notFound: resolve(import.meta.dirname, '404.html'),

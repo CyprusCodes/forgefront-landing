@@ -6,25 +6,25 @@ const base = '/'
 
 export const paths = {
   home: base,
+  product: `${base}product/`,
+  agencies: `${base}agencies/`,
   contact: `${base}contact/`,
   logo: `${base}forgefront.svg`,
   mark: `${base}forgefront-mark.svg`,
   privacy: `${base}privacy/`,
 }
 
-type Page = 'home' | 'contact' | 'other'
+type Page = 'home' | 'product' | 'agencies' | 'contact' | 'other'
 
 export function header(page: Page) {
-  const home = page === 'home' ? '' : paths.home
   return `
     <a class="skip-link" href="#main">${common.skipLink}</a>
     <header class="site-header">
       <div class="wrap header-layout">
         <a class="brand" href="${paths.home}"><img src="${paths.logo}" alt="ForgeFront home" width="148" height="31"></a>
         <nav class="site-nav" id="site-nav" aria-label="${common.navLabel}">
-          <a href="${home}#workflow">${common.nav.workflow}</a>
-          <a href="${home}#agencies">${common.nav.agencies}</a>
-          <a href="${home}#features">${common.nav.features}</a>
+          <a href="${paths.product}">${common.nav.workflow}</a>
+          <a href="${paths.agencies}">${common.nav.agencies}</a>
           <a href="${paths.contact}"${page === 'contact' ? ' aria-current="page"' : ''}>${common.nav.contact}</a>
           <a class="nav-login" href="${site.appUrl}">${common.login}</a>
         </nav>
@@ -54,9 +54,9 @@ export function footer() {
           <div>
             <h2>${common.footer.product}</h2>
             <ul role="list">
-              <li><a href="${paths.home}#workflow">${common.nav.workflow}</a></li>
-              <li><a href="${paths.home}#agencies">${common.nav.agencies}</a></li>
-              <li><a href="${paths.home}#features">${common.nav.features}</a></li>
+              <li><a href="${paths.product}">${common.nav.workflow}</a></li>
+              <li><a href="${paths.agencies}">${common.nav.agencies}</a></li>
+              <li><a href="${paths.product}#features">${common.nav.features}</a></li>
               <li><a href="${site.appUrl}">${common.login}</a></li>
             </ul>
           </div>
