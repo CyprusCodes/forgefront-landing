@@ -27,7 +27,6 @@ export const common = {
 
 export const landing = {
   hero: {
-    label: 'ForgeFront',
     title: 'Sales ERP & CRM for property developers.',
     description:
       'ForgeFront keeps leads, price lists, reservations, agencies, contracts and payment plans in one system. Sales, finance and management work from the same numbers.',
@@ -48,13 +47,13 @@ export const landing = {
     },
   ],
   problem: {
-    title: 'Most sales teams still run on spreadsheets.',
+    title: 'Spreadsheets, group chats and a separate accounting system',
     description:
-      'Leads sit in one file, reservations in another, payments in the accounting system. Nobody sees the full picture until something goes wrong.',
+      'That is how most developers still sell. Each team keeps its own version of the numbers, and nobody sees the full picture until something goes wrong.',
     effects: [
-      'An instalment falls due and nobody follows up',
-      'Two agents promise the same unit to different buyers',
-      'Month-end sales figures take days to put together',
+      { icon: '£', tone: 'amber', title: 'An instalment falls due', detail: 'and nobody follows up until the buyer is months behind.' },
+      { icon: '⇄', tone: 'rose', title: 'Two agents, one unit', detail: 'both promise the same apartment to different buyers.' },
+      { icon: '▤', tone: 'ice', title: 'Month-end takes days', detail: 'someone pulls the sales figures together by hand.' },
     ],
   },
   workflow: {
@@ -64,30 +63,35 @@ export const landing = {
     steps: [
       {
         id: 'leads',
+        summary: 'Every enquiry on a lead board, assigned to sales or the call centre.',
         title: 'Leads & contacts',
         detail: 'Capture every enquiry on a lead board, keep buyers and contacts in one place and assign follow-ups to sales or the call centre.',
         image: { src: '/screens/leads.webp', width: 1525, height: 774, alt: 'Lead board in ForgeFront with leads grouped by stage' },
       },
       {
         id: 'inventory',
+        summary: 'Units, prices and live availability for your team and agencies.',
         title: 'Inventory & price lists',
         detail: 'Publish projects and units with prices, areas and views. Your team and your agencies see the same live availability.',
         image: { src: '/screens/units.webp', width: 1520, height: 771, alt: 'Unit details in ForgeFront with availability, price, area, plan code and view' },
       },
       {
         id: 'deposits',
+        summary: 'Hold a unit within your rules and take the deposit.',
         title: 'Reservations & deposits',
         detail: 'Hold a unit within your reservation rules, take the deposit and see the listing and agreed price side by side.',
         image: { src: '/screens/deposits-demo.webp', width: 1761, height: 893, alt: 'Deposit requests in ForgeFront with project, agency and listing price' },
       },
       {
         id: 'approvals',
+        summary: 'Requests wait in one queue until someone approves them.',
         title: 'Approvals & contracts',
         detail: 'Reservation, extension, transfer and deposit requests wait in one queue. Contracts then move to signature and final approval.',
         image: { src: '/screens/approvals-demo.webp', width: 1761, height: 893, alt: 'Waiting actions in ForgeFront with reservation, extension, agency and transfer requests' },
       },
       {
         id: 'payments',
+        summary: 'Interest and late fees worked out per instalment.',
         title: 'Payment plans',
         detail: 'Each buyer gets a payment plan with interest and late fees worked out per instalment. Record payments, correct the principal or regenerate the plan when terms change.',
         image: { src: '/screens/plan-demo.webp', width: 1763, height: 892, alt: 'Payment plan in ForgeFront with 24 monthly instalments, principal, interest, late fees and status' },
@@ -95,7 +99,7 @@ export const landing = {
     ],
   },
   collections: {
-    title: 'Follow up on overdue instalments.',
+    title: 'Follow up on overdue instalments',
     description:
       'Set the steps once. When an instalment is late, ForgeFront sends the right message on the right channel and moves the account to your worklist when someone needs to act.',
     image: { src: '/screens/collections.webp', width: 1510, height: 655, alt: 'Collections escalation ladder in ForgeFront: email at 30 days, email and SMS at 60 days, legal letters at 90 and 120 days' },
@@ -106,7 +110,14 @@ export const landing = {
     ],
   },
   agencies: {
-    title: 'Sell through agencies, without losing control.',
+    title: 'Sell through agencies without losing control',
+    statement: 'Your agencies see the price list.',
+    statementAccent: 'Not your accounts.',
+    facts: [
+      { title: 'Own login', detail: 'for each agency and its sales staff' },
+      { title: 'Live availability', detail: 'the same list your team works from' },
+      { title: 'Commission rates', detail: 'per level, tracked from submitted to paid' },
+    ],
     description:
       'Agencies in other countries log in to ForgeFront with their own accounts. They see live prices and availability, reserve units and follow their sales. Your accounting stays private.',
     points: [
@@ -117,7 +128,7 @@ export const landing = {
     image: { src: '/screens/agencies-demo.webp', width: 1918, height: 820, alt: 'Agency list in ForgeFront with agency levels, registration requests and franchises' },
   },
   afterSales: {
-    title: 'The work does not stop at the sale.',
+    title: 'The work does not stop at the sale',
     intro: 'Buyers stay in the same system after they sign, so your team can look after them until handover and beyond.',
     image: { src: '/screens/construction.webp', width: 1525, height: 625, alt: 'Construction progress in ForgeFront with a log group for each project' },
     items: [
@@ -129,19 +140,8 @@ export const landing = {
   },
   features: {
     title: 'Also in ForgeFront',
-    ask: {
-      label: 'Example question asked in ForgeFront',
-      query: 'overdue payments in Block B',
-      summary: '3 payments overdue',
-      total: '£21,050',
-      rows: [
-        { unit: 'B-07', item: 'Instalment 5', amount: '£8,200', late: '12 days' },
-        { unit: 'B-11', item: 'Instalment 3', amount: '£6,450', late: '5 days' },
-        { unit: 'B-02', item: 'Deposit balance', amount: '£6,400', late: '2 days' },
-      ],
-    },
     items: [
-      { title: 'Ask your data', detail: 'Type a question like “overdue payments in Block B” and get the list. Currently in beta.' },
+      { title: 'Ask your data', detail: 'Ask a question like “overdue payments in Girne Business Plaza” and get the list. Currently in beta.' },
       { title: 'Dashboards & reports', detail: 'Live availability per project, monthly sales charts, a leaderboard and reports you create when you need them.' },
       { title: 'Several currencies', detail: 'Prices and payments in GBP, EUR, USD and TRY with daily exchange rates.' },
       { title: 'Sales rules & campaigns', detail: 'Set reservation limits per representative, reservation durations and sales campaigns per project.' },
@@ -152,9 +152,10 @@ export const landing = {
       { title: 'Data export', detail: 'Export the data behind any list whenever you need it outside ForgeFront.' },
     ],
   },
-  proof: { value: '1,000+', label: 'sales completed end to end in ForgeFront' },
+  productIntro: 'What ForgeFront does at each stage of a sale, and after it.',
+  agenciesIntro: 'Agency accounts, levels, commissions and approvals in the same system as your own sales team.',
   cta: {
-    title: 'Take a closer look at ForgeFront.',
+    title: 'Take a closer look at ForgeFront',
     description: 'Tell us about your company. We’ll arrange a demo.',
     or: 'Or email us at',
   },

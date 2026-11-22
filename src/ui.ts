@@ -102,3 +102,21 @@ export function initScreenViewer() {
     })
   }
 }
+
+// Home page: show the screen for the step being hovered or focused.
+export function initFlow() {
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-flow]'))
+  const screens = Array.from(document.querySelectorAll<HTMLImageElement>('.flow-screen'))
+  if (!links.length) return
+  const show = (index: number) => {
+    links.forEach((link, i) => link.parentElement?.classList.toggle('is-active', i === index))
+    screens.forEach((img, i) => {
+      img.classList.toggle('is-active', i === index)
+      if (i === index) img.loading = 'eager'
+    })
+  }
+  links.forEach((link, i) => {
+    link.addEventListener('mouseenter', () => show(i))
+    link.addEventListener('focus', () => show(i))
+  })
+}
