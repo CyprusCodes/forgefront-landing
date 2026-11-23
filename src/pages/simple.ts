@@ -1,5 +1,5 @@
-import { common, notFound, privacy } from '../content/en'
-import { footer, header, paths } from './layout'
+import { common, notFound, privacy } from '../content/index.ts'
+import { footer, header, paths } from './layout.ts'
 
 export function renderPrivacy() {
   return `

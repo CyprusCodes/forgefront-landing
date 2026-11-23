@@ -1,6 +1,6 @@
-import { contact, site } from './content/en'
-import { fieldLabels, formMarkup, sentMarkup } from './pages/contact'
-import { initMenu } from './ui'
+import { contact, site, getLocale } from './content/index.ts'
+import { fieldLabels, formMarkup, sentMarkup } from './pages/contact.ts'
+import { initMenu } from './ui.ts'
 
 // Markup is pre-rendered into contact/index.html by the prerender plugin in
 // vite.config.ts. This file only adds validation and submission.
@@ -30,12 +30,13 @@ function validate(form: HTMLFormElement) {
 
 function buildMailto(data: FormData) {
   const company = String(data.get('company') ?? '')
-  const lines = Object.entries(fieldLabels)
+  const lines = Object.entries(fieldLabels())
     .map(([key, label]) => [label, String(data.get(key) ?? '').trim()] as const)
     .filter(([, value]) => value)
     .map(([label, value]) => `${label}: ${value}`)
-  const subject = `Demo request – ${company}`
-  const body = `Hello ForgeFront team,\n\nI would like to request a demo.\n\n${lines.join('\n')}\n`
+  const subject = `${getLocale() === 'tr' ? 'Demo talebi' : 'Demo request'} – ${company}`
+  const greeting = getLocale() === 'tr' ? 'Merhaba ForgeFront ekibi,\n\nDemo talep etmek istiyorum.' : 'Hello ForgeFront team,\n\nI would like to request a demo.'
+  const body = `${greeting}\n\n${lines.join('\n')}\n`
   return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
