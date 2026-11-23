@@ -1,4 +1,4 @@
-import { common } from './content/en'
+import { common } from './content/index.ts'
 
 // Small progressive enhancements shared by every page.
 

@@ -1,7 +1,6 @@
-import { contact, site } from '../content/en'
-import { footer, header, paths } from './layout'
+import { contact, site } from '../content/index.ts'
+import { footer, header, paths } from './layout.ts'
 
-const f = contact.form
 
 type FieldOptions = {
   id: string
@@ -16,6 +15,7 @@ type FieldOptions = {
 }
 
 function field(o: FieldOptions) {
+  const f = contact.form
   const req = o.required ? ' required aria-required="true"' : ''
   const desc = [o.hint ? `${o.id}-hint` : '', `${o.id}-error`].filter(Boolean).join(' ')
   const attrs = `id="${o.id}" name="${o.id}"${req} aria-describedby="${desc}"${o.autocomplete ? ` autocomplete="${o.autocomplete}"` : ''}`
@@ -37,12 +37,16 @@ function field(o: FieldOptions) {
   `
 }
 
-export const fieldLabels: Record<string, string> = {
+export function fieldLabels(): Record<string, string> {
+  const f = contact.form
+  return {
   name: f.name, email: f.email, company: f.company,
   phone: f.phone, units: f.units, message: f.message,
+  }
 }
 
 export function formMarkup() {
+  const f = contact.form
   return `
     <form class="form-card" id="demo-form" novalidate>
       <div class="form-error" id="form-error" role="alert" hidden>${f.errors.summary}</div>

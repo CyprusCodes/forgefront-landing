@@ -1,5 +1,5 @@
-import { common, landing, site } from '../content/en'
-import { footer, header, paths } from './layout'
+import { common, landing, site } from '../content/index.ts'
+import { footer, header, paths } from './layout.ts'
 
 type Shot = { src: string; width: number; height: number; alt: string }
 
