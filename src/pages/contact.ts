@@ -48,7 +48,7 @@ export function fieldLabels(): Record<string, string> {
 export function formMarkup() {
   const f = contact.form
   return `
-    <form class="form-card" id="demo-form" novalidate>
+    <form class="form-card" id="demo-form" data-campa-webhook="${site.campaWebhook}" novalidate>
       <div class="form-error" id="form-error" role="alert" hidden>${f.errors.summary}</div>
       <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
       <div class="fields">

@@ -12,6 +12,24 @@ function isControl(el: unknown): el is Control {
   return el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement
 }
 
+// Sends the lead to Campa as well. Errors are ignored so the visitor never notices.
+function sendToCampa(form: HTMLFormElement) {
+  const url = form.dataset.campaWebhook
+  const field = (n: string) => form.elements.namedItem(n) as HTMLInputElement | null
+  if (!url || field('website')?.value) return // honeypot filled: do not send
+  const value = (n: string) => field(n)?.value.trim() || undefined
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: value('name'),
+      email: value('email'),
+      phone: value('phone'),
+    }),
+    keepalive: true,
+  }).catch(() => {})
+}
+
 function validate(form: HTMLFormElement) {
   let firstInvalid: Control | null = null
   for (const el of Array.from(form.elements)) {
@@ -71,6 +89,9 @@ function bindForm(saved?: FormData) {
       invalid.focus()
       return
     }
+    // Campa runs next to the normal submission and never blocks or breaks it.
+    sendToCampa(form)
+
     const data = new FormData(form)
     const viaMail = !site.formEndpoint
 

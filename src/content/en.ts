@@ -4,6 +4,8 @@ export const site = {
   // Google Apps Script Web app URL (see apps-script/README.md).
   // While this is empty the form falls back to opening the visitor's email app.
   formEndpoint: 'https://script.google.com/macros/s/AKfycbzFv_pgZs_gPiewOyXwpKDGbocimIS7xj4bsZn_EbY23bQvQDuiUz0dQwl2K-GvOjH5/exec',
+  // Campa webhook for the demo form. Leads are also sent here, next to the form endpoint above.
+  campaWebhook: 'https://api.campa.ai/automations/webhook/d0249f672a9ff998d097fb5a0848b5c37d155f9af344f9da',
 }
 
 export const common = {
